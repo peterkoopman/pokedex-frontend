@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Pokemon } from '@/_hooks/usePokemon';
 import styles from './PokemonCard.module.css';
+import typestyles from '../../_styles/types.module.css';
 import { ucfirst, padNumber } from '@/_utilities/utilityFunctions';
 
 interface PokemonCardProps {
@@ -21,7 +22,9 @@ const PokemonCard = ({ pokemon }: PokemonCardProps) => {
         <h2 className={styles.name}>{ucfirst(pokemon.name)}</h2>
         <div className="types">
           {pokemon.types.map((type: string) => (
-            <span key={type} className={`${styles[type]} ${styles.typeclass}`}>
+            <span
+              key={type}
+              className={`${typestyles[type]} ${typestyles.typeclass}`}>
               {type}
             </span>
           ))}
