@@ -5,11 +5,23 @@ export interface Pokemon {
   name: string;
   image: string;
   types: string[];
+  abilities: string[];
+  height: number;
+  weight: number;
+  base_experience: number;
 }
 
 interface PokemonData {
   pokemon_species_id: number;
   name: string;
+  base_experience: number;
+  height: number;
+  weight: number;
+  pokemon_v2_pokemonabilities: {
+    pokemon_v2_ability: {
+      name: string;
+    };
+  }[];
   pokemon_v2_pokemontypes: {
     pokemon_v2_type: {
       name: string;
@@ -44,11 +56,19 @@ const getPokemon = async () => {
       pokemon_v2_pokemon(order_by: {id: asc}, limit: 151) {
         pokemon_species_id
         name
+        height
+        weight
         pokemon_v2_pokemontypes {
           pokemon_v2_type {
             name
           }
         }
+        pokemon_v2_pokemonabilities {
+          pokemon_v2_ability {
+            name
+          }
+        }
+        base_experience
         pokemon_v2_pokemonsprites {
           sprites
         }
@@ -77,6 +97,13 @@ const getPokemon = async () => {
         return {
           id: pokemon.pokemon_species_id,
           name: pokemon.name,
+          height: pokemon.height,
+          weight: pokemon.weight,
+          abilities: pokemon.pokemon_v2_pokemonabilities.map(
+            (ability: { pokemon_v2_ability: { name: string } }) =>
+              ability.pokemon_v2_ability.name
+          ),
+          base_experience: pokemon.base_experience,
           image:
             pokemon.pokemon_v2_pokemonsprites[0].sprites.other[
               'official-artwork'
